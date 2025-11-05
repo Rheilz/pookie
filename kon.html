@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Peta Koneksi Kota di Jawa Barat</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      background-color: #f8f8f8;
+    }
+    .header-bg {
+      background-color: #0d3463;
+      color: white;
+    }
+    footer {
+      background-color: white;
+      border-top: 1px solid #e5e7eb;
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 0.9rem;
+      color: #4b5563;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header biru -->
+  <div class="header-bg text-xs py-1 px-4"></div>
+
+  <!-- Navbar -->
+  <nav class="bg-white shadow-md">
+    <div
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-start items-center space-x-6 text-gray-700 font-medium"
+    >
+      <a href="About1.html" class="hover:text-green-600 transition duration-150"
+        >Biodata</a
+      >
+      <a href="graph.html" class="hover:text-green-600 transition duration-150"
+        >Graph</a
+      >
+      <a href="kon.html" class="hover:text-green-600 transition duration-150"
+        >Peta Koneksi</a
+      >
+    </div>
+  </nav>
+
+  <!-- Konten utama -->
+  <main class="max-w-5xl mx-auto mt-12 px-4">
+    <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">
+      🗺️ Visualisasi Rute Terpendek Kota di Provinsi Jawa Barat
+    </h1>
+
+    <div class="bg-white rounded-xl shadow-md p-6 mb-10">
+      <div class="flex flex-wrap justify-center gap-4 mb-6">
+        <div>
+          <label
+            for="start"
+            class="block text-sm font-semibold text-gray-700 mb-1"
+            >Kota Asal</label
+          >
+          <select
+            id="start"
+            class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+          ></select>
+        </div>
+        <div>
+          <label
+            for="end"
+            class="block text-sm font-semibold text-gray-700 mb-1"
+            >Kota Tujuan</label
+          >
+          <select
+            id="end"
+            class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+          ></select>
+        </div>
+        <div class="flex items-end">
+          <button
+            onclick="calculateRoute()"
+            class="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 transition"
+          >
+            Tampilkan Rute
+          </button>
+        </div>
+      </div>
+
+      <div id="info" class="text-center text-gray-700 mb-6">
+        Pilih dua kota untuk melihat rute terpendek.
+      </div>
+      <div id="map" class="w-full h-[600px] rounded-lg overflow-hidden"></div>
+    </div>
+  </main>
+
+  <footer>
+     2025 Peta Koneksi Jawa Barat   </footer>
+
+  <script>
+    // =======================
+    // Data kota di Jawa Barat
+    // =======================
+    const cities = {
+      Bandung: [-6.9175, 107.6191],
+      Bogor: [-6.5971, 106.8060],
+      Bekasi: [-6.2349, 107.0008],
+      Depok: [-6.4025, 106.7942],
+      Cirebon: [-6.7063, 108.5570],
+      Sukabumi: [-6.9270, 106.9300],
+      Tasikmalaya: [-7.3274, 108.2207],
+      Ciamis: [-7.3330, 108.3500],
+      Garut: [-7.2110, 107.9087],
+      Indramayu: [-6.3360, 108.3240],
+      Sumedang: [-6.8580, 107.9200],
+      Subang: [-6.5713, 107.7571],
+      Majalengka: [-6.8364, 108.2270],
+      Purwakarta: [-6.5569, 107.4439]
+    };
+
+    // =======================
+    // Koneksi antar kota (jarak km)
+    // =======================
+    const edges = [
+      ["Bandung", "Bogor", 120],
+      ["Bandung", "Bekasi", 150],
+      ["Bandung", "Cirebon", 140],
+      ["Bandung", "Garut", 60],
+      ["Bandung", "Subang", 70],
+      ["Bandung", "Sumedang", 50],
+      ["Garut", "Tasikmalaya", 50],
+      ["Tasikmalaya", "Ciamis", 40],
+      ["Ciamis", "Cirebon", 130],
+      ["Bogor", "Depok", 30],
+      ["Depok", "Bekasi", 35],
+      ["Bekasi", "Cirebon", 200],
+      ["Bandung", "Sukabumi", 100],
+      ["Sukabumi", "Bogor", 60],
+      ["Indramayu", "Cirebon", 55],
+      ["Indramayu", "Subang", 80],
+      ["Subang", "Purwakarta", 40],
+      ["Purwakarta", "Bogor", 100],
+      ["Sumedang", "Majalengka", 50],
+      ["Majalengka", "Cirebon", 70]
+    ];
+
+    // Setup dropdown
+    const startSelect = document.getElementById("start");
+    const endSelect = document.getElementById("end");
+    for (let city in cities) {
+      startSelect.add(new Option(city, city));
+      endSelect.add(new Option(city, city));
+    }
+
+    // Graph adjacency
+    let graph = {};
+    for (let [a, b, w] of edges) {
+      if (!graph[a]) graph[a] = {};
+      if (!graph[b]) graph[b] = {};
+      graph[a][b] = w;
+      graph[b][a] = w;
+    }
+
+    // Algoritma Dijkstra
+    function dijkstra(graph, start, end) {
+      let distances = {},
+        prev = {},
+        pq = new Set(Object.keys(graph));
+      for (let node of pq) {
+        distances[node] = Infinity;
+        prev[node] = null;
+      }
+      distances[start] = 0;
+
+      while (pq.size) {
+        let current = [...pq].reduce((a, b) =>
+          distances[a] < distances[b] ? a : b
+        );
+        pq.delete(current);
+        if (current === end) break;
+        for (let neighbor in graph[current]) {
+          let alt = distances[current] + graph[current][neighbor];
+          if (alt < distances[neighbor]) {
+            distances[neighbor] = alt;
+            prev[neighbor] = current;
+          }
+        }
+      }
+
+      let path = [];
+      for (let at = end; at; at = prev[at]) path.unshift(at);
+      return { path, distance: distances[end] };
+    }
+
+    // Gambar peta
+    function drawMap(route = []) {
+      let edge_lons = [],
+        edge_lats = [];
+      for (let [a, b] of edges) {
+        edge_lons.push(cities[a][1], cities[b][1], null);
+        edge_lats.push(cities[a][0], cities[b][0], null);
+      }
+
+      let node_lons = [],
+        node_lats = [],
+        labels = [];
+      for (let city in cities) {
+        node_lons.push(cities[city][1]);
+        node_lats.push(cities[city][0]);
+        labels.push(city);
+      }
+
+      let traces = [
+        {
+          type: "scattermapbox",
+          lon: edge_lons,
+          lat: edge_lats,
+          mode: "lines",
+          line: { width: 1, color: "red" },
+          name: "Koneksi Kota"
+        },
+        {
+          type: "scattermapbox",
+          lon: node_lons,
+          lat: node_lats,
+          mode: "markers+text",
+          text: labels,
+          textposition: "top center",
+          marker: { size: 9, color: "green" },
+          name: "Kota"
+        }
+      ];
+
+      // Tambahkan rute biru
+      if (route.length > 1) {
+        let rx = [],
+          ry = [];
+        for (let i = 0; i < route.length - 1; i++) {
+          rx.push(cities[route[i]][1], cities[route[i + 1]][1], null);
+          ry.push(cities[route[i]][0], cities[route[i + 1]][0], null);
+        }
+        traces.push({
+          type: "scattermapbox",
+          lon: rx,
+          lat: ry,
+          mode: "lines",
+          line: { width: 4, color: "blue" },
+          name: "Rute Terpendek"
+        });
+      }
+
+      Plotly.newPlot("map", traces, {
+        mapbox: {
+          style: "open-street-map",
+          center: { lat: -6.9, lon: 107.5 },
+          zoom: 8.2
+        },
+        margin: { t: 0, b: 0, l: 0, r: 0 },
+        showlegend: false
+      });
+    }
+
+    // Fungsi tampilkan rute
+    function calculateRoute() {
+      let start = startSelect.value,
+        end = endSelect.value;
+      if (start === end) {
+        document.getElementById("info").innerHTML =
+          "⚠️ Pilih dua kota yang berbeda!";
+        drawMap();
+        return;
+      }
+      let result = dijkstra(graph, start, end);
+      if (result.distance === Infinity) {
+        document.getElementById(
+          "info"
+        ).innerHTML = `❌ Tidak ada rute dari ${start} ke ${end}.`;
+        drawMap();
+      } else {
+        document.getElementById(
+          "info"
+        ).innerHTML = `🚗 Rute terpendek dari <b>${start}</b> ke <b>${end}</b>:<br><b>${result.path.join(
+          " ➜ "
+        )}</b><br>Jarak total: <b>${result.distance} km</b>`;
+        drawMap(result.path);
+      }
+    }
+
+    drawMap();
+  </script>
+</body>
+</html>
