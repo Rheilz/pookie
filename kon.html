@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Peta Koneksi Kota di Jawa Barat</title>
+  <title>Connection Map of Cities in West Java</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
@@ -39,13 +39,13 @@
       class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-start items-center space-x-6 text-gray-700 font-medium"
     >
       <a href="About1.html" class="hover:text-green-600 transition duration-150"
-        >Biodata</a
+        >Profile</a
       >
       <a href="graph.html" class="hover:text-green-600 transition duration-150"
         >Graph</a
       >
       <a href="kon.html" class="hover:text-green-600 transition duration-150"
-        >Peta Koneksi</a
+        >Connection Map</a
       >
     </div>
   </nav>
@@ -53,7 +53,7 @@
   <!-- Konten utama -->
   <main class="max-w-5xl mx-auto mt-12 px-4">
     <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">
-      🗺️ Visualisasi Rute Terpendek Kota di Provinsi Jawa Barat
+      🗺️ Shortest Route Visualization of Cities in West Java Province
     </h1>
 
     <div class="bg-white rounded-xl shadow-md p-6 mb-10">
@@ -62,7 +62,7 @@
           <label
             for="start"
             class="block text-sm font-semibold text-gray-700 mb-1"
-            >Kota Asal</label
+            >Starting City</label
           >
           <select
             id="start"
@@ -73,7 +73,7 @@
           <label
             for="end"
             class="block text-sm font-semibold text-gray-700 mb-1"
-            >Kota Tujuan</label
+            >Destination City</label
           >
           <select
             id="end"
@@ -85,20 +85,20 @@
             onclick="calculateRoute()"
             class="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 transition"
           >
-            Tampilkan Rute
+            Show Route
           </button>
         </div>
       </div>
 
       <div id="info" class="text-center text-gray-700 mb-6">
-        Pilih dua kota untuk melihat rute terpendek.
+        Select two cities to view the shortest route.
       </div>
       <div id="map" class="w-full h-[600px] rounded-lg overflow-hidden"></div>
     </div>
   </main>
 
   <footer>
-     2025 Peta Koneksi Jawa Barat   </footer>
+     2025 West Java Connection Map   </footer>
 
   <script>
     // =======================
@@ -220,7 +220,7 @@
           lat: edge_lats,
           mode: "lines",
           line: { width: 1, color: "red" },
-          name: "Koneksi Kota"
+          name: "City Connections"
         },
         {
           type: "scattermapbox",
@@ -230,7 +230,7 @@
           text: labels,
           textposition: "top center",
           marker: { size: 9, color: "green" },
-          name: "Kota"
+          name: "Cities"
         }
       ];
 
@@ -248,7 +248,7 @@
           lat: ry,
           mode: "lines",
           line: { width: 4, color: "blue" },
-          name: "Rute Terpendek"
+          name: "Shortest Route"
         });
       }
 
@@ -269,7 +269,7 @@
         end = endSelect.value;
       if (start === end) {
         document.getElementById("info").innerHTML =
-          "⚠️ Pilih dua kota yang berbeda!";
+          "⚠️ Select two different cities!";
         drawMap();
         return;
       }
@@ -277,14 +277,14 @@
       if (result.distance === Infinity) {
         document.getElementById(
           "info"
-        ).innerHTML = `❌ Tidak ada rute dari ${start} ke ${end}.`;
+        ).innerHTML = `❌ No route from ${start} to ${end}.`;
         drawMap();
       } else {
         document.getElementById(
           "info"
-        ).innerHTML = `🚗 Rute terpendek dari <b>${start}</b> ke <b>${end}</b>:<br><b>${result.path.join(
-          " ➜ "
-        )}</b><br>Jarak total: <b>${result.distance} km</b>`;
+        ).innerHTML = `🚗 Shortest route from <b>${start}</b> to <b>${end}</b>:<br>
+<b>${result.path.join(" ➜ ")}</b><br>
+Total distance: <b>${result.distance} km</b>;
         drawMap(result.path);
       }
     }
@@ -293,3 +293,4 @@
   </script>
 </body>
 </html>
+
