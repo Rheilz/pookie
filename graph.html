@@ -48,33 +48,56 @@
         }
         ul { list-style-type: none; padding-left: 0; }
         ul li { padding: 4px 0; }
+
+        /* Language Dropdown */
+        .lang-item { display:flex; align-items:center; gap:0.5rem; width:100%; }
+        .flag { font-size:1.05rem; line-height:1; }
     </style>
 </head>
 <body>
     <div class="header-bg text-xs py-1 px-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <!-- Blue streak remains -->
-        </div>
+        <div class="max-w-7xl mx-auto flex justify-between items-center"></div>
     </div>
 
     <nav class="bg-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-start items-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+            <!-- Left Menu -->
             <div class="flex space-x-6 text-gray-700 font-medium">
-                <a href="About1.html" class="hover:text-green-600 transition duration-150">Profile</a>
-                <a href="graph.html" class="hover:text-green-600 transition duration-150">Graph</a>
-                <a href="kon.html" class="hover:text-green-600 transition duration-150">Connection Map</a>
+                <a href="About1.html" data-translate="nav_profile" class="hover:text-green-600 transition duration-150">Profile</a>
+                <a href="graph.html" data-translate="nav_graph" class="hover:text-green-600 transition duration-150">Graph</a>
+                <a href="kon.html" data-translate="nav_map" class="hover:text-green-600 transition duration-150">Connection Map</a>
+            </div>
+
+            <!-- Language Dropdown -->
+            <div class="relative select-none">
+                <button id="langBtn" onclick="toggleLangMenu()"
+                    class="flex items-center space-x-2 text-gray-800 font-semibold text-sm hover:text-green-600 px-2 py-1 rounded">
+                    <span id="currentFlag" class="flag"></span>
+                    <span id="currentLangLabel">English</span>
+                    <span id="langArrow" class="transition ml-1">&#9662;</span>
+                </button>
+
+                <div id="langMenu" class="hidden absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-md shadow-md py-2 z-50">
+                    <button onclick="setLanguage('en')" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 text-sm lang-item">
+                        <span class="flag"></span><span>English</span>
+                    </button>
+                    <button onclick="setLanguage('id')" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 text-sm lang-item">
+                        <span class="flag"></span><span>Indonesia</span>
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
 
     <div class="max-w-4xl mx-auto p-8 md:p-12">
-        <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-10 tracking-tight">
-            Visualisasi Graf
+        <!-- Fixed Title -->
+        <h1 id="graphTitle" class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight" data-translate="graph_title">
+            Graph Visualization
         </h1>
 
         <div class="space-y-6 mb-8">
             <div class="flex flex-col space-y-2">
-                <label for="nodeCount" class="text-lg font-semibold text-gray-800">Enter number of nodes</label>
+                <label for="nodeCount" class="text-lg font-semibold text-gray-800" data-translate="label_nodes">Enter number of nodes</label>
                 <div class="flex items-center bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
                     <input type="number" id="nodeCount" value="5" min="0" class="w-full bg-transparent p-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500" onchange="updateGraph()">
                     <button onclick="changeCount('nodeCount', 1)" class="p-3 text-xl font-bold text-gray-600 hover:bg-gray-100 transition duration-150">+</button>
@@ -83,7 +106,7 @@
             </div>
 
             <div class="flex flex-col space-y-2">
-                <label for="edgeCount" class="text-lg font-semibold text-gray-800">Enter number of edges</label>
+                <label for="edgeCount" class="text-lg font-semibold text-gray-800" data-translate="label_edges">Enter number of edges</label>
                 <div class="flex items-center bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
                     <input type="number" id="edgeCount" value="3" min="0" class="w-full bg-transparent p-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500" onchange="updateGraph()">
                     <button onclick="changeCount('edgeCount', 1)" class="p-3 text-xl font-bold text-gray-600 hover:bg-gray-100 transition duration-150">+</button>
@@ -92,19 +115,79 @@
             </div>
         </div>
 
-        <h2 id="graphTitle" class="text-xl font-semibold text-center mb-6 text-gray-800"></h2>
         <div id="networkContainer"></div>
 
         <div>
-            <h2 class="text-xl font-semibold mb-2">Degree of Each Node</h2>
+            <h2 class="text-xl font-semibold mb-2" data-translate="degree_title">Degree of Each Node</h2>
             <ul id="degreeList"></ul>
 
-            <h2 class="text-xl font-semibold mb-2">Adjacency Matrix</h2>
+            <h2 class="text-xl font-semibold mb-2" data-translate="adj_matrix_title">Adjacency Matrix</h2>
             <div id="adjMatrixContainer"></div>
         </div>
     </div>
 
     <script>
+        const translations = {
+            en: {
+                nav_profile: "Profile",
+                nav_graph: "Graph",
+                nav_map: "Connection Map",
+                nav_language: "English",
+                graph_title: "Graph Visualization",
+                label_nodes: "Enter number of nodes",
+                label_edges: "Enter number of edges",
+                degree_title: "Degree of Each Node",
+                adj_matrix_title: "Adjacency Matrix",
+                graph_not_available: "Graph Not Available"
+            },
+            id: {
+                nav_profile: "Profil",
+                nav_graph: "Grafik",
+                nav_map: "Peta Koneksi",
+                nav_language: "Indonesia",
+                graph_title: "Visualisasi Grafik",
+                label_nodes: "Masukkan jumlah simpul",
+                label_edges: "Masukkan jumlah sisi",
+                degree_title: "Derajat Setiap Simpul",
+                adj_matrix_title: "Matriks Keterhubungan",
+                graph_not_available: "Grafik Tidak Tersedia"
+            }
+        };
+
+        const langMenu = document.getElementById('langMenu');
+        const langArrow = document.getElementById('langArrow');
+        const currentLangLabel = document.getElementById('currentLangLabel');
+
+        function toggleLangMenu() {
+            langMenu.classList.toggle('hidden');
+            langArrow.classList.toggle('rotate-180');
+        }
+
+        function setLanguage(lang) {
+            document.querySelectorAll("[data-translate]").forEach(el => {
+                const key = el.getAttribute("data-translate");
+                if (translations[lang][key]) el.innerHTML = translations[lang][key];
+            });
+            currentLangLabel.textContent = translations[lang].nav_language;
+            localStorage.setItem("siteLanguage", lang);
+            langMenu.classList.add("hidden");
+            langArrow.classList.remove("rotate-180");
+        }
+
+        (function initLanguage() {
+            const saved = localStorage.getItem("siteLanguage") || "en";
+            setLanguage(saved);
+        })();
+
+        document.addEventListener("click", (event) => {
+            const btn = document.getElementById("langBtn");
+            if (!btn.contains(event.target) && !langMenu.contains(event.target)) {
+                langMenu.classList.add("hidden");
+                langArrow.classList.remove("rotate-180");
+            }
+        });
+
+        // --- Graph Script ---
         let network = null;
 
         function changeCount(id, delta) {
@@ -117,8 +200,11 @@
         }
 
         function displayNoGraphMessage(container){
-            document.getElementById('graphTitle').textContent = 'Graph Not Available';
-            container.innerHTML = '<p class="text-2xl font-bold text-gray-500 p-4">Graph Not Available</p>';
+            const msg = document.createElement('p');
+            msg.className = "text-2xl font-bold text-gray-500 p-4";
+            msg.textContent = translations[localStorage.getItem("siteLanguage") || 'en'].graph_not_available;
+            container.innerHTML = '';
+            container.appendChild(msg);
             container.style.display = 'flex';
             container.style.alignItems = 'center';
             container.style.justifyContent = 'center';
@@ -164,9 +250,6 @@
                 return;
             }
 
-            document.getElementById('graphTitle').textContent = `Graf dengan ${nodeCount} Node dan ${added} Edge`;
-
-            // Draw network
             network = new vis.Network(container,{nodes,edges},{
                 nodes:{shape:'circle', size:20, font:{size:14, color:'#000000'}},
                 edges:{width:2},
@@ -174,7 +257,6 @@
                 interaction:{hover:true, dragNodes:true}
             });
 
-            // Calculate degrees
             const degrees = Array(nodeCount).fill(0);
             edges.forEach(e=>{ degrees[e.from]++; degrees[e.to]++; });
             const degreeList = document.getElementById('degreeList');
@@ -184,7 +266,6 @@
                 degreeList.appendChild(li);
             });
 
-            // Build adjacency matrix
             const matrix = Array.from({length: nodeCount}, ()=>Array(nodeCount).fill(0));
             edges.forEach(e=>{ matrix[e.from][e.to]=1; matrix[e.to][e.from]=1; });
 
@@ -211,4 +292,3 @@
     </script>
 </body>
 </html>
-
