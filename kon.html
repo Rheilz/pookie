@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Connection Map of Cities in West Java</title>
+  <title>West Java City Connection Map</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
@@ -30,7 +30,7 @@
   </style>
 </head>
 <body>
-  <!-- Header biru -->
+  <!-- Blue Header -->
   <div class="header-bg text-xs py-1 px-4"></div>
 
   <!-- Navbar -->
@@ -38,22 +38,22 @@
     <div
       class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-start items-center space-x-6 text-gray-700 font-medium"
     >
-      <a href="About1.html" class="hover:text-green-600 transition duration-150"
-        >Profile</a
-      >
-      <a href="graph.html" class="hover:text-green-600 transition duration-150"
-        >Graph</a
-      >
-      <a href="kon.html" class="hover:text-green-600 transition duration-150"
-        >Connection Map</a
-      >
+      <a href="About1.html" class="hover:text-green-600 transition duration-150">
+        Profile
+      </a>
+      <a href="graph.html" class="hover:text-green-600 transition duration-150">
+        Graph
+      </a>
+      <a href="kon.html" class="hover:text-green-600 transition duration-150">
+        Connection Map
+      </a>
     </div>
   </nav>
 
-  <!-- Konten utama -->
+  <!-- Main content -->
   <main class="max-w-5xl mx-auto mt-12 px-4">
     <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">
-      🗺️ Shortest Route Visualization of Cities in West Java Province
+      🗺️ Visualization of Shortest Routes Between Cities in West Java Province
     </h1>
 
     <div class="bg-white rounded-xl shadow-md p-6 mb-10">
@@ -98,31 +98,32 @@
   </main>
 
   <footer>
-     2025 West Java Connection Map   </footer>
+    2025 West Java Connection Map
+  </footer>
 
   <script>
     // =======================
-    // Data kota di Jawa Barat
+    // City coordinates
     // =======================
     const cities = {
       Bandung: [-6.9175, 107.6191],
-      Bogor: [-6.5971, 106.8060],
+      Bogor: [-6.5971, 106.806],
       Bekasi: [-6.2349, 107.0008],
       Depok: [-6.4025, 106.7942],
-      Cirebon: [-6.7063, 108.5570],
-      Sukabumi: [-6.9270, 106.9300],
+      Cirebon: [-6.7063, 108.557],
+      Sukabumi: [-6.927, 106.93],
       Tasikmalaya: [-7.3274, 108.2207],
-      Ciamis: [-7.3330, 108.3500],
-      Garut: [-7.2110, 107.9087],
-      Indramayu: [-6.3360, 108.3240],
-      Sumedang: [-6.8580, 107.9200],
+      Ciamis: [-7.333, 108.35],
+      Garut: [-7.211, 107.9087],
+      Indramayu: [-6.336, 108.324],
+      Sumedang: [-6.858, 107.92],
       Subang: [-6.5713, 107.7571],
-      Majalengka: [-6.8364, 108.2270],
+      Majalengka: [-6.8364, 108.227],
       Purwakarta: [-6.5569, 107.4439]
     };
 
     // =======================
-    // Koneksi antar kota (jarak km)
+    // City connections (distance in km)
     // =======================
     const edges = [
       ["Bandung", "Bogor", 120],
@@ -147,7 +148,7 @@
       ["Majalengka", "Cirebon", 70]
     ];
 
-    // Setup dropdown
+    // Setup dropdown menu options
     const startSelect = document.getElementById("start");
     const endSelect = document.getElementById("end");
     for (let city in cities) {
@@ -155,7 +156,7 @@
       endSelect.add(new Option(city, city));
     }
 
-    // Graph adjacency
+    // Build adjacency list
     let graph = {};
     for (let [a, b, w] of edges) {
       if (!graph[a]) graph[a] = {};
@@ -164,15 +165,17 @@
       graph[b][a] = w;
     }
 
-    // Algoritma Dijkstra
+    // Dijkstra Algorithm
     function dijkstra(graph, start, end) {
       let distances = {},
         prev = {},
         pq = new Set(Object.keys(graph));
+
       for (let node of pq) {
         distances[node] = Infinity;
         prev[node] = null;
       }
+
       distances[start] = 0;
 
       while (pq.size) {
@@ -181,6 +184,7 @@
         );
         pq.delete(current);
         if (current === end) break;
+
         for (let neighbor in graph[current]) {
           let alt = distances[current] + graph[current][neighbor];
           if (alt < distances[neighbor]) {
@@ -195,7 +199,7 @@
       return { path, distance: distances[end] };
     }
 
-    // Gambar peta
+    // Draw the map
     function drawMap(route = []) {
       let edge_lons = [],
         edge_lats = [];
@@ -234,7 +238,7 @@
         }
       ];
 
-      // Tambahkan rute biru
+      // Add shortest route line
       if (route.length > 1) {
         let rx = [],
           ry = [];
@@ -263,17 +267,20 @@
       });
     }
 
-    // Fungsi tampilkan rute
+    // Show route button handler
     function calculateRoute() {
       let start = startSelect.value,
         end = endSelect.value;
+
       if (start === end) {
         document.getElementById("info").innerHTML =
           "⚠️ Select two different cities!";
         drawMap();
         return;
       }
+
       let result = dijkstra(graph, start, end);
+
       if (result.distance === Infinity) {
         document.getElementById(
           "info"
@@ -282,9 +289,9 @@
       } else {
         document.getElementById(
           "info"
-        ).innerHTML = `🚗 Shortest route from <b>${start}</b> to <b>${end}</b>:<br>
-<b>${result.path.join(" ➜ ")}</b><br>
-Total distance: <b>${result.distance} km</b>;
+        ).innerHTML = `🚗 Shortest route from <b>${start}</b> to <b>${end}</b>:<br><b>${result.path.join(
+          " ➜ "
+        )}</b><br>Total distance: <b>${result.distance} km</b>`;
         drawMap(result.path);
       }
     }
@@ -293,4 +300,3 @@ Total distance: <b>${result.distance} km</b>;
   </script>
 </body>
 </html>
-
