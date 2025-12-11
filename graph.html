@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualisasi Graf</title>
+    <title>Graph Visualization</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -60,9 +60,9 @@
     <nav class="bg-white shadow-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-start items-center">
             <div class="flex space-x-6 text-gray-700 font-medium">
-                <a href="About1.html" class="hover:text-green-600 transition duration-150">Biodata</a>
+                <a href="About1.html" class="hover:text-green-600 transition duration-150">Profile</a>
                 <a href="graph.html" class="hover:text-green-600 transition duration-150">Graph</a>
-                <a href="kon.html" class="hover:text-green-600 transition duration-150">Peta Koneksi</a>
+                <a href="kon.html" class="hover:text-green-600 transition duration-150">Connection Map</a>
             </div>
         </div>
     </nav>
@@ -74,7 +74,7 @@
 
         <div class="space-y-6 mb-8">
             <div class="flex flex-col space-y-2">
-                <label for="nodeCount" class="text-lg font-semibold text-gray-800">Masukkan jumlah node</label>
+                <label for="nodeCount" class="text-lg font-semibold text-gray-800">Enter number of nodes</label>
                 <div class="flex items-center bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
                     <input type="number" id="nodeCount" value="5" min="0" class="w-full bg-transparent p-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500" onchange="updateGraph()">
                     <button onclick="changeCount('nodeCount', 1)" class="p-3 text-xl font-bold text-gray-600 hover:bg-gray-100 transition duration-150">+</button>
@@ -83,7 +83,7 @@
             </div>
 
             <div class="flex flex-col space-y-2">
-                <label for="edgeCount" class="text-lg font-semibold text-gray-800">Masukkan jumlah edge</label>
+                <label for="edgeCount" class="text-lg font-semibold text-gray-800">Enter number of edges</label>
                 <div class="flex items-center bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
                     <input type="number" id="edgeCount" value="3" min="0" class="w-full bg-transparent p-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500" onchange="updateGraph()">
                     <button onclick="changeCount('edgeCount', 1)" class="p-3 text-xl font-bold text-gray-600 hover:bg-gray-100 transition duration-150">+</button>
@@ -96,7 +96,7 @@
         <div id="networkContainer"></div>
 
         <div>
-            <h2 class="text-xl font-semibold mb-2">Degree Tiap Node</h2>
+            <h2 class="text-xl font-semibold mb-2">Degree of Each Node</h2>
             <ul id="degreeList"></ul>
 
             <h2 class="text-xl font-semibold mb-2">Adjacency Matrix</h2>
@@ -117,8 +117,8 @@
         }
 
         function displayNoGraphMessage(container){
-            document.getElementById('graphTitle').textContent = 'Grafik Tidak Tersedia';
-            container.innerHTML = '<p class="text-2xl font-bold text-gray-500 p-4">Grafik Tidak Tersedia</p>';
+            document.getElementById('graphTitle').textContent = 'Graph Not Available';
+            container.innerHTML = '<p class="text-2xl font-bold text-gray-500 p-4">Graph Not Available</p>';
             container.style.display = 'flex';
             container.style.alignItems = 'center';
             container.style.justifyContent = 'center';
@@ -211,3 +211,4 @@
     </script>
 </body>
 </html>
+
