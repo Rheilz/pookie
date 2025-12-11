@@ -1,221 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discete Math Final Exam</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Discrete Math Final Exam</title>
 
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8f8f8;
-        }
-        .header-bg {
-            background-color: #0d3463;
-            color: white;
-        }
-        .team-circle {
-            width: 150px;
-            height: 150px;
-            background-color: #e2e8f0;
-            background-size: cover;
-            background-position: center;
-            border-radius: 50%;
-            border: 4px solid #ffffff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-    </style>
+  <style>
+    body { font-family: 'Inter', sans-serif; background:#f8f8f8; }
+
+    .header-bg { background:#0d3463; color:#fff; }
+
+    .team-circle{
+      width:150px; height:150px;
+      background:#e2e8f0; border-radius:9999px;
+      border:4px solid #fff;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+      object-fit:cover;
+    }
+
+    /* flags inside menu */
+    .lang-item { display:flex; align-items:center; gap:0.5rem; width:100%; }
+    .flag { font-size:1.05rem; line-height:1; }
+  </style>
 </head>
-<script>
-function toggleLangMenu() {
-    const menu = document.getElementById("langMenu");
-    const arrow = document.getElementById("langArrow");
 
-    menu.classList.toggle("hidden");
-    arrow.classList.toggle("rotate-180");
-}
-
-function setLanguage(lang) {
-    alert("Language set to: " + lang);
-    document.getElementById("langMenu").classList.add("hidden");
-    document.getElementById("langArrow").classList.remove("rotate-180");
-}
-</script>
 <body>
 
-<!-- Header -->
-<div class="header-bg text-xs py-1 px-4">
-    <div class="max-w-7xl mx-auto flex justify-between items-center">
+  <!-- Header (empty stripe) -->
+  <div class="header-bg text-xs py-1 px-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center"></div>
+  </div>
 
-        <!-- 🔵 LANGUAGE SELECTOR -->
-        <select id="languageSelect" class="text-black px-2 py-1 rounded">
-            <option value="en">English</option>
-            <option value="id">Indonesia</option>
-        </select>
-
-    </div>
-</div>
-
-<!-- NAVBAR -->
-<nav class="bg-white shadow-md">
+  <!-- NAVBAR -->
+  <nav class="bg-white shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
 
-        <!-- Left Menu -->
-        <div class="flex space-x-6 text-gray-700 font-medium">
-            <a href="About1.html" class="hover:text-green-600 transition duration-150">Profile</a>
-            <a href="graph.html" class="hover:text-green-600 transition duration-150">Graph</a>
-            <a href="kon.html" class="hover:text-green-600 transition duration-150">Connection Map</a>
+      <!-- Left -->
+      <div class="flex space-x-6 text-gray-700 font-medium">
+        <a data-translate="nav_profile" href="About1.html" class="hover:text-green-600 transition">Profile</a>
+        <a data-translate="nav_graph" href="graph.html" class="hover:text-green-600 transition">Graph</a>
+        <a data-translate="nav_map" href="kon.html" class="hover:text-green-600 transition">Connection Map</a>
+      </div>
+
+      <!-- Language Dropdown -->
+      <div class="relative select-none">
+        <button id="langBtn" onclick="toggleLangMenu()"
+          class="flex items-center space-x-2 text-gray-800 font-semibold text-sm hover:text-green-600 px-2 py-1 rounded">
+          <span id="currentFlag" class="flag"></span>
+          <span id="currentLangLabel">English</span>
+          <span id="langArrow" class="transition ml-1">&#9662;</span>
+        </button>
+
+        <div id="langMenu" class="hidden absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-md shadow-md py-2 z-50">
+          <button onclick="setLanguage('en')" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 text-sm lang-item">
+            <span class="flag"></span><span>English</span>
+          </button>
+          <button onclick="setLanguage('id')" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 text-sm lang-item">
+            <span class="flag"></span><span>Indonesia</span>
+          </button>
         </div>
-
-        <!-- Language Dropdown -->
-        <div class="relative select-none">
-            <button onclick="toggleLangMenu()" 
-                    class="flex items-center space-x-1 text-gray-800 font-semibold text-sm hover:text-green-600 transition">
-                <span>Language</span>
-                <span id="langArrow" class="transition transform">&#9662;</span>
-            </button>
-
-            <div id="langMenu" 
-                 class="hidden absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md py-2 z-50">
-
-                <button onclick="setLanguage('ENG')" 
-                        class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100 text-sm">
-                    English (ENG)
-                </button>
-
-                <button onclick="setLanguage('ID')" 
-                        class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100 text-sm">
-                    Indonesian (ID)
-                </button>
-
-            </div>
-        </div>
+      </div>
 
     </div>
-</nav>
+  </nav>
 
-<!-- TITLE -->
-<div class="mt-20 text-center">
-    <h2 class="text-4xl font-extrabold text-gray-900 mb-12 tracking-tight" data-translate="title_team">TEAM PROJECT</h2>
+  <!-- CONTENT -->
+  <div id="content">
 
-    <p class="text-gray-600 mb-4 leading-relaxed" data-translate="lecturer">Lecturer : Edwin Setiawan Nugraha</p>
-    <p class="text-gray-600 mb-4 leading-relaxed" data-translate="batch">Actuarial Science BATCH 2025</p>
-    <p class="text-gray-600 font-semibold italic" data-translate="exam">Discrete Math Final Exam</p>
-</div>
+    <!-- TITLE -->
+    <div class="mt-20 text-center">
+      <h2 class="text-4xl font-extrabold text-gray-900 mb-6 tracking-tight" data-translate="title_team">TEAM PROJECT</h2>
 
-<!-- MEET OUR TEAM -->
-<div class="mt-20 text-center">
-    <h2 class="text-4xl font-extrabold text-gray-900 mb-12 tracking-tight" data-translate="meet_team">MEET OUR TEAM</h2>
-
-    <div class="flex flex-wrap justify-center gap-10">
-
-        <!-- Person 1 -->
-        <div class="flex flex-col items-center w-64 p-6 bg-white rounded-xl shadow-lg">
-            <img src="rhei.jpg" alt="developer images">
-            <h3 class="mt-6 text-xl font-bold text-gray-900">Rheina Ethelion</h3>
-            <p class="text-sm text-gray-500">021202500021</p>
-
-            <p class="mt-4 text-gray-600 text-sm leading-relaxed" data-translate="rheina_role">
-                <span class="font-semibold">Project Lead & Front-End</span><br>
-                ✧ Led project planning and coordination.<br>
-                ✧ Designed the website layout and interface.<br>
-                ✧ Built the front-end pages and ensured responsiveness.
-            </p>
-        </div>
-
-        <!-- Person 2 -->
-        <div class="flex flex-col items-center w-64 p-6 bg-white rounded-xl shadow-lg">
-            <img src="afni.jpg" alt="developer images">
-            <h3 class="mt-6 text-xl font-bold text-gray-900">Afni Ayu Riski Oktafiana</h3>
-            <p class="text-sm text-gray-500">021202500027</p>
-
-            <p class="mt-4 text-gray-600 text-sm leading-relaxed" data-translate="afni_role">
-                <span class="font-semibold">Research & Content</span><br>
-                ✧ Conducted research and gathered supporting data.<br>
-                ✧ Wrote and edited website content.<br>
-                ✧ Prepared explanations, visuals, and documentation.
-            </p>
-        </div>
-
-        <!-- Person 3 -->
-        <div class="flex flex-col items-center w-64 p-6 bg-white rounded-xl shadow-lg">
-            <img src="delta.jpg" alt="developer images">
-            <h3 class="mt-6 text-xl font-bold text-gray-900">Delta Dwi Novtita Sari</h3>
-            <p class="text-sm text-gray-500">021202500002</p>
-
-            <p class="mt-4 text-gray-600 text-sm leading-relaxed" data-translate="delta_role">
-                <span class="font-semibold">Data & Logic</span><br>
-                ✧ Created formulas and analytical calculations.<br>
-                ✧ Developed simple back-end or functional scripts.<br>
-                ✧ Processed data and produced charts/tables.
-            </p>
-        </div>
-
+      <p class="text-gray-600 mb-2" data-translate="lecturer">Lecturer : Edwin Setiawan Nugraha</p>
+      <p class="text-gray-600 mb-2" data-translate="batch">Actuarial Science BATCH 2025</p>
+      <p class="text-gray-600 font-semibold italic" data-translate="exam">Discrete Math Final Exam</p>
     </div>
-</div>
 
-<footer class="mt-16 border-t border-gray-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center"></div>
-</footer>
+    <!-- TEAM -->
+    <div class="mt-12 text-center">
+      <h2 class="text-4xl font-extrabold text-gray-900 mb-8" data-translate="meet_team">MEET OUR TEAM</h2>
 
-<!-- 🔵 TRANSLATION SCRIPT -->
-<script>
-const translations = {
-    id: {
+      <div class="flex flex-wrap justify-center gap-10">
+
+        <div class="flex flex-col items-center w-64 p-6 bg-white rounded-xl shadow-lg">
+          <img src="rhei.jpg" class="team-circle">
+          <h3 class="mt-6 text-xl font-bold">Rheina Ethelion</h3>
+          <p class="text-sm text-gray-500">021202500021</p>
+          <p class="mt-4 text-gray-600 text-sm" data-translate="rheina_role">
+            <span class="font-semibold">Project Lead & Front-End</span><br>
+            ✧ Led project planning and coordination.<br>
+            ✧ Designed the website layout and interface.<br>
+            ✧ Built the front-end pages and ensured responsiveness.
+          </p>
+        </div>
+
+        <div class="flex flex-col items-center w-64 p-6 bg-white rounded-xl shadow-lg">
+          <img src="afni.jpg" class="team-circle">
+          <h3 class="mt-6 text-xl font-bold">Afni Ayu Riski Oktafiana</h3>
+          <p class="text-sm text-gray-500">021202500027</p>
+          <p class="mt-4 text-gray-600 text-sm" data-translate="afni_role">
+            <span class="font-semibold">Research & Content</span><br>
+            ✧ Conducted research and gathered supporting data.<br>
+            ✧ Wrote and edited website content.<br>
+            ✧ Prepared explanations, visuals, and documentation.
+          </p>
+        </div>
+
+        <div class="flex flex-col items-center w-64 p-6 bg-white rounded-xl shadow-lg">
+          <img src="delta.jpg" class="team-circle">
+          <h3 class="mt-6 text-xl font-bold">Delta Dwi Novtita Sari</h3>
+          <p class="text-sm text-gray-500">021202500002</p>
+          <p class="mt-4 text-gray-600 text-sm" data-translate="delta_role">
+            <span class="font-semibold">Data & Logic</span><br>
+            ✧ Created formulas and analytical calculations.<br>
+            ✧ Developed simple back-end or functional scripts.<br>
+            ✧ Processed data and produced charts/tables.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <footer class="mt-16 border-t border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 py-8 text-center"></div>
+    </footer>
+
+  </div>
+
+  <!-- TRANSLATION SCRIPT (NO FADING) -->
+  <script>
+
+    const translations = {
+      en: {
+        nav_profile: "Profile",
+        nav_graph: "Graph",
+        nav_map: "Connection Map",
+        nav_language: "English",
+        title_team: "TEAM PROJECT",
+        lecturer: "Lecturer : Edwin Setiawan Nugraha",
+        batch: "Actuarial Science BATCH 2025",
+        exam: "Discrete Math Final Exam",
+        meet_team: "MEET OUR TEAM",
+        rheina_role: `
+          <span class="font-semibold">Project Lead & Front-End</span><br>
+          ✧ Led project planning and coordination.<br>
+          ✧ Designed the website layout and interface.<br>
+          ✧ Built the front-end pages and ensured responsiveness.
+        `,
+        afni_role: `
+          <span class="font-semibold">Research & Content</span><br>
+          ✧ Conducted research and gathered supporting data.<br>
+          ✧ Wrote and edited website content.<br>
+          ✧ Prepared explanations, visuals, and documentation.
+        `,
+        delta_role: `
+          <span class="font-semibold">Data & Logic</span><br>
+          ✧ Created formulas and analytical calculations.<br>
+          ✧ Developed simple back-end or functional scripts.<br>
+          ✧ Processed data and produced charts/tables.
+        `
+      },
+
+      id: {
         nav_profile: "Profil",
         nav_graph: "Grafik",
         nav_map: "Peta Koneksi",
-
+        nav_language: "Indonesia",
         title_team: "PROYEK TIM",
         lecturer: "Dosen : Edwin Setiawan Nugraha",
-        batch: "Aktuaria Angkatan 2025",
+        batch: "Aktuaria ANGKATAN 2025",
         exam: "Ujian Akhir Matematika Diskrit",
-
         meet_team: "KENALI TIM KAMI",
-
         rheina_role: `
-            <span class="font-semibold">Ketua Proyek & Front-End</span><br>
-            ✧ Memimpin perencanaan dan koordinasi proyek.<br>
-            ✧ Mendesain tampilan dan antarmuka website.<br>
-            ✧ Membangun halaman front-end dan memastikan responsivitas.
+          <span class="font-semibold">Ketua Proyek & Front-End</span><br>
+          ✧ Memimpin perencanaan dan koordinasi proyek.<br>
+          ✧ Mendesain tampilan dan antarmuka website.<br>
+          ✧ Membangun halaman front-end dan memastikan responsivitas.
         `,
-
         afni_role: `
-            <span class="font-semibold">Riset & Konten</span><br>
-            ✧ Melakukan riset dan mengumpulkan data pendukung.<br>
-            ✧ Menulis dan mengedit konten website.<br>
-            ✧ Menyiapkan penjelasan, visual, dan dokumentasi.
+          <span class="font-semibold">Riset & Konten</span><br>
+          ✧ Melakukan riset dan mengumpulkan data pendukung.<br>
+          ✧ Menulis dan mengedit konten website.<br>
+          ✧ Menyiapkan penjelasan, visual, dan dokumentasi.
         `,
-
         delta_role: `
-            <span class="font-semibold">Data & Logika</span><br>
-            ✧ Membuat rumus dan perhitungan analitis.<br>
-            ✧ Mengembangkan script sederhana atau fungsi back-end.<br>
-            ✧ Mengolah data serta membuat grafik/tabel.
+          <span class="font-semibold">Data & Logika</span><br>
+          ✧ Membuat rumus dan perhitungan analitis.<br>
+          ✧ Mengembangkan script sederhana atau fungsi back-end.<br>
+          ✧ Mengolah data serta membuat grafik/tabel.
         `
+      }
+    };
+
+    const langMenu = document.getElementById('langMenu');
+    const langArrow = document.getElementById('langArrow');
+    const currentLangLabel = document.getElementById('currentLangLabel');
+
+    function toggleLangMenu() {
+      langMenu.classList.toggle('hidden');
+      langArrow.classList.toggle('rotate-180');
     }
-};
 
-// Apply translation
-function applyTranslation(lang) {
-    document.querySelectorAll("[data-translate]").forEach(el => {
+    function setLanguage(lang) {
+      // update all elements instantly
+      document.querySelectorAll("[data-translate]").forEach(el => {
         const key = el.getAttribute("data-translate");
-        if (translations[lang] && translations[lang][key]) {
-            el.innerHTML = translations[lang][key];
+        if (translations[lang][key]) {
+          el.innerHTML = translations[lang][key];
         }
-    });
-}
+      });
 
-document.getElementById("languageSelect").addEventListener("change", function () {
-    applyTranslation(this.value);
-});
-</script>
+      // update dropdown label
+      currentLangLabel.textContent = translations[lang].nav_language;
+
+      // save
+      localStorage.setItem("siteLanguage", lang);
+
+      // close menu
+      langMenu.classList.add("hidden");
+      langArrow.classList.remove("rotate-180");
+    }
+
+    // load saved language
+    (function initLanguage() {
+      const saved = localStorage.getItem("siteLanguage") || "en";
+      setLanguage(saved);
+    })();
+
+    // close dropdown when clicking outside
+    document.addEventListener("click", (event) => {
+      const btn = document.getElementById("langBtn");
+      if (!btn.contains(event.target) && !langMenu.contains(event.target)) {
+        langMenu.classList.add("hidden");
+        langArrow.classList.remove("rotate-180");
+      }
+    });
+
+  </script>
 
 </body>
 </html>
-
-
