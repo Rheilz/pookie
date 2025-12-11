@@ -11,22 +11,11 @@
   />
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <style>
-    body {
-      font-family: "Inter", sans-serif;
-      background-color: #f8f8f8;
-    }
-    .header-bg {
-      background-color: #0d3463;
-      color: white;
-    }
-    footer {
-      background-color: white;
-      border-top: 1px solid #e5e7eb;
-      text-align: center;
-      padding: 1rem 0;
-      font-size: 0.9rem;
-      color: #4b5563;
-    }
+    body { font-family: "Inter", sans-serif; background-color: #f8f8f8; }
+    .header-bg { background-color: #0d3463; color: white; }
+    footer { background-color: white; border-top: 1px solid #e5e7eb; text-align: center; padding: 1rem 0; font-size: 0.9rem; color: #4b5563; }
+    .lang-item { display:flex; align-items:center; gap:0.5rem; width:100%; }
+    .flag { font-size:1.05rem; line-height:1; }
   </style>
 </head>
 <body>
@@ -35,120 +24,151 @@
 
   <!-- Navbar -->
   <nav class="bg-white shadow-md">
-    <div
-      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-start items-center space-x-6 text-gray-700 font-medium"
-    >
-      <a href="About1.html" class="hover:text-green-600 transition duration-150">
-        Profile
-      </a>
-      <a href="graph.html" class="hover:text-green-600 transition duration-150">
-        Graph
-      </a>
-      <a href="kon.html" class="hover:text-green-600 transition duration-150">
-        Connection Map
-      </a>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+      <div class="flex space-x-6 text-gray-700 font-medium">
+        <a href="About1.html" data-translate="nav_profile" class="hover:text-green-600 transition duration-150">Profile</a>
+        <a href="graph.html" data-translate="nav_graph" class="hover:text-green-600 transition duration-150">Graph</a>
+        <a href="kon.html" data-translate="nav_map" class="hover:text-green-600 transition duration-150">Connection Map</a>
+      </div>
+
+      <!-- Language Dropdown -->
+      <div class="relative select-none">
+        <button id="langBtn" onclick="toggleLangMenu()"
+          class="flex items-center space-x-2 text-gray-800 font-semibold text-sm hover:text-green-600 px-2 py-1 rounded">
+          <span id="currentFlag" class="flag"></span>
+          <span id="currentLangLabel">English</span>
+          <span id="langArrow" class="transition ml-1">&#9662;</span>
+        </button>
+
+        <div id="langMenu" class="hidden absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-md shadow-md py-2 z-50">
+          <button onclick="setLanguage('en')" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 text-sm lang-item">
+            <span class="flag"></span><span>English</span>
+          </button>
+          <button onclick="setLanguage('id')" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 text-sm lang-item">
+            <span class="flag"></span><span>Indonesia</span>
+          </button>
+        </div>
+      </div>
     </div>
   </nav>
 
   <!-- Main content -->
   <main class="max-w-5xl mx-auto mt-12 px-4">
-    <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">
-      🗺️ Visualization of Shortest Routes Between Cities in West Java Province
+    <h1 id="pageTitle" class="text-3xl font-bold text-gray-800 text-center mb-6" data-translate="page_title">
+      🗺️ Visualization of Graph and Shortest Routes Between Cities in West Java Province
     </h1>
 
     <div class="bg-white rounded-xl shadow-md p-6 mb-10">
       <div class="flex flex-wrap justify-center gap-4 mb-6">
         <div>
-          <label
-            for="start"
-            class="block text-sm font-semibold text-gray-700 mb-1"
-            >Starting City</label
-          >
-          <select
-            id="start"
-            class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-          ></select>
+          <label for="start" data-translate="label_start" class="block text-sm font-semibold text-gray-700 mb-1">Starting City</label>
+          <select id="start" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"></select>
         </div>
         <div>
-          <label
-            for="end"
-            class="block text-sm font-semibold text-gray-700 mb-1"
-            >Destination City</label
-          >
-          <select
-            id="end"
-            class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-          ></select>
+          <label for="end" data-translate="label_end" class="block text-sm font-semibold text-gray-700 mb-1">Destination City</label>
+          <select id="end" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"></select>
         </div>
         <div class="flex items-end">
-          <button
-            onclick="calculateRoute()"
-            class="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 transition"
-          >
-            Show Route
-          </button>
+          <button onclick="calculateRoute()" class="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 transition" data-translate="btn_show_route">Show Route</button>
         </div>
       </div>
 
-      <div id="info" class="text-center text-gray-700 mb-6">
+      <div id="info" class="text-center text-gray-700 mb-6" data-translate="info_default">
         Select two cities to view the shortest route.
       </div>
       <div id="map" class="w-full h-[600px] rounded-lg overflow-hidden"></div>
     </div>
   </main>
 
-  <footer>
-    2025 West Java Connection Map
-  </footer>
+  <footer>2025 West Java Connection Map</footer>
 
   <script>
-    // =======================
-    // City coordinates
-    // =======================
-    const cities = {
-      Bandung: [-6.9175, 107.6191],
-      Bogor: [-6.5971, 106.806],
-      Bekasi: [-6.2349, 107.0008],
-      Depok: [-6.4025, 106.7942],
-      Cirebon: [-6.7063, 108.557],
-      Sukabumi: [-6.927, 106.93],
-      Tasikmalaya: [-7.3274, 108.2207],
-      Ciamis: [-7.333, 108.35],
-      Garut: [-7.211, 107.9087],
-      Indramayu: [-6.336, 108.324],
-      Sumedang: [-6.858, 107.92],
-      Subang: [-6.5713, 107.7571],
-      Majalengka: [-6.8364, 108.227],
-      Purwakarta: [-6.5569, 107.4439]
+    // Translation data
+    const translations = {
+      en: {
+        nav_profile: "Profile",
+        nav_graph: "Graph",
+        nav_map: "Connection Map",
+        nav_language: "English",
+        page_title: "🗺️ Visualization of Shortest Routes Between Cities in West Java Province",
+        label_start: "Starting City",
+        label_end: "Destination City",
+        btn_show_route: "Show Route",
+        info_default: "Select two cities to view the shortest route.",
+        info_same: "⚠️ Select two different cities!",
+        info_no_route: "❌ No route from {start} to {end}.",
+        info_route: "🚗 Shortest route from <b>{start}</b> to <b>{end}</b>:<br><b>{path}</b><br>Total distance: <b>{distance} km</b>"
+      },
+      id: {
+        nav_profile: "Profil",
+        nav_graph: "Grafik",
+        nav_map: "Peta Koneksi",
+        nav_language: "Indonesia",
+        page_title: "🗺️ Visualisasi Rute Terpendek Antar Kota di Provinsi Jawa Barat",
+        label_start: "Kota Awal",
+        label_end: "Kota Tujuan",
+        btn_show_route: "Tampilkan Rute",
+        info_default: "Pilih dua kota untuk melihat rute terpendek.",
+        info_same: "⚠️ Pilih dua kota berbeda!",
+        info_no_route: "❌ Tidak ada rute dari {start} ke {end}.",
+        info_route: "🚗 Rute terpendek dari <b>{start}</b> ke <b>{end}</b>:<br><b>{path}</b><br>Total jarak: <b>{distance} km</b>"
+      }
     };
 
+    const langMenu = document.getElementById('langMenu');
+    const langArrow = document.getElementById('langArrow');
+    const currentLangLabel = document.getElementById('currentLangLabel');
+
+    function toggleLangMenu() {
+      langMenu.classList.toggle('hidden');
+      langArrow.classList.toggle('rotate-180');
+    }
+
+    function setLanguage(lang) {
+      document.querySelectorAll("[data-translate]").forEach(el => {
+        const key = el.getAttribute("data-translate");
+        if (translations[lang][key]) el.innerHTML = translations[lang][key];
+      });
+      currentLangLabel.textContent = translations[lang].nav_language;
+      localStorage.setItem("siteLanguage", lang);
+      langMenu.classList.add("hidden");
+      langArrow.classList.remove("rotate-180");
+    }
+
+    (function initLanguage() {
+      const saved = localStorage.getItem("siteLanguage") || "en";
+      setLanguage(saved);
+    })();
+
+    document.addEventListener("click", (event) => {
+      const btn = document.getElementById("langBtn");
+      if (!btn.contains(event.target) && !langMenu.contains(event.target)) {
+        langMenu.classList.add("hidden");
+        langArrow.classList.remove("rotate-180");
+      }
+    });
+
     // =======================
-    // City connections (distance in km)
+    // City & Graph Setup
     // =======================
+    const cities = {
+      Bandung: [-6.9175, 107.6191], Bogor: [-6.5971, 106.806], Bekasi: [-6.2349, 107.0008],
+      Depok: [-6.4025, 106.7942], Cirebon: [-6.7063, 108.557], Sukabumi: [-6.927, 106.93],
+      Tasikmalaya: [-7.3274, 108.2207], Ciamis: [-7.333, 108.35], Garut: [-7.211, 107.9087],
+      Indramayu: [-6.336, 108.324], Sumedang: [-6.858, 107.92], Subang: [-6.5713, 107.7571],
+      Majalengka: [-6.8364, 108.227], Purwakarta: [-6.5569, 107.4439]
+    };
+
     const edges = [
-      ["Bandung", "Bogor", 120],
-      ["Bandung", "Bekasi", 150],
-      ["Bandung", "Cirebon", 140],
-      ["Bandung", "Garut", 60],
-      ["Bandung", "Subang", 70],
-      ["Bandung", "Sumedang", 50],
-      ["Garut", "Tasikmalaya", 50],
-      ["Tasikmalaya", "Ciamis", 40],
-      ["Ciamis", "Cirebon", 130],
-      ["Bogor", "Depok", 30],
-      ["Depok", "Bekasi", 35],
-      ["Bekasi", "Cirebon", 200],
-      ["Bandung", "Sukabumi", 100],
-      ["Sukabumi", "Bogor", 60],
-      ["Indramayu", "Cirebon", 55],
-      ["Indramayu", "Subang", 80],
-      ["Subang", "Purwakarta", 40],
-      ["Purwakarta", "Bogor", 100],
-      ["Sumedang", "Majalengka", 50],
-      ["Majalengka", "Cirebon", 70]
+      ["Bandung","Bogor",120],["Bandung","Bekasi",150],["Bandung","Cirebon",140],
+      ["Bandung","Garut",60],["Bandung","Subang",70],["Bandung","Sumedang",50],
+      ["Garut","Tasikmalaya",50],["Tasikmalaya","Ciamis",40],["Ciamis","Cirebon",130],
+      ["Bogor","Depok",30],["Depok","Bekasi",35],["Bekasi","Cirebon",200],
+      ["Bandung","Sukabumi",100],["Sukabumi","Bogor",60],["Indramayu","Cirebon",55],
+      ["Indramayu","Subang",80],["Subang","Purwakarta",40],["Purwakarta","Bogor",100],
+      ["Sumedang","Majalengka",50],["Majalengka","Cirebon",70]
     ];
 
-    // Setup dropdown menu options
     const startSelect = document.getElementById("start");
     const endSelect = document.getElementById("end");
     for (let city in cities) {
@@ -156,7 +176,6 @@
       endSelect.add(new Option(city, city));
     }
 
-    // Build adjacency list
     let graph = {};
     for (let [a, b, w] of edges) {
       if (!graph[a]) graph[a] = {};
@@ -165,133 +184,56 @@
       graph[b][a] = w;
     }
 
-    // Dijkstra Algorithm
     function dijkstra(graph, start, end) {
-      let distances = {},
-        prev = {},
-        pq = new Set(Object.keys(graph));
-
-      for (let node of pq) {
-        distances[node] = Infinity;
-        prev[node] = null;
-      }
-
-      distances[start] = 0;
-
+      let distances = {}, prev = {}, pq = new Set(Object.keys(graph));
+      for (let node of pq) { distances[node]=Infinity; prev[node]=null; }
+      distances[start]=0;
       while (pq.size) {
-        let current = [...pq].reduce((a, b) =>
-          distances[a] < distances[b] ? a : b
-        );
+        let current = [...pq].reduce((a,b)=>distances[a]<distances[b]?a:b);
         pq.delete(current);
-        if (current === end) break;
-
-        for (let neighbor in graph[current]) {
-          let alt = distances[current] + graph[current][neighbor];
-          if (alt < distances[neighbor]) {
-            distances[neighbor] = alt;
-            prev[neighbor] = current;
-          }
+        if(current===end) break;
+        for(let neighbor in graph[current]){
+          let alt = distances[current]+graph[current][neighbor];
+          if(alt<distances[neighbor]) { distances[neighbor]=alt; prev[neighbor]=current; }
         }
       }
-
-      let path = [];
-      for (let at = end; at; at = prev[at]) path.unshift(at);
+      let path=[]; for(let at=end;at;at=prev[at]) path.unshift(at);
       return { path, distance: distances[end] };
     }
 
-    // Draw the map
-    function drawMap(route = []) {
-      let edge_lons = [],
-        edge_lats = [];
-      for (let [a, b] of edges) {
-        edge_lons.push(cities[a][1], cities[b][1], null);
-        edge_lats.push(cities[a][0], cities[b][0], null);
-      }
-
-      let node_lons = [],
-        node_lats = [],
-        labels = [];
-      for (let city in cities) {
-        node_lons.push(cities[city][1]);
-        node_lats.push(cities[city][0]);
-        labels.push(city);
-      }
-
-      let traces = [
-        {
-          type: "scattermapbox",
-          lon: edge_lons,
-          lat: edge_lats,
-          mode: "lines",
-          line: { width: 1, color: "red" },
-          name: "City Connections"
-        },
-        {
-          type: "scattermapbox",
-          lon: node_lons,
-          lat: node_lats,
-          mode: "markers+text",
-          text: labels,
-          textposition: "top center",
-          marker: { size: 9, color: "green" },
-          name: "Cities"
-        }
+    function drawMap(route=[]){
+      let edge_lons=[], edge_lats=[];
+      for(let [a,b] of edges){ edge_lons.push(cities[a][1],cities[b][1],null); edge_lats.push(cities[a][0],cities[b][0],null); }
+      let node_lons=[], node_lats=[], labels=[];
+      for(let city in cities){ node_lons.push(cities[city][1]); node_lats.push(cities[city][0]); labels.push(city); }
+      let traces=[
+        { type:"scattermapbox", lon:edge_lons, lat:edge_lats, mode:"lines", line:{width:1,color:"red"}, name:"City Connections" },
+        { type:"scattermapbox", lon:node_lons, lat:node_lats, mode:"markers+text", text:labels, textposition:"top center", marker:{size:9,color:"green"}, name:"Cities" }
       ];
-
-      // Add shortest route line
-      if (route.length > 1) {
-        let rx = [],
-          ry = [];
-        for (let i = 0; i < route.length - 1; i++) {
-          rx.push(cities[route[i]][1], cities[route[i + 1]][1], null);
-          ry.push(cities[route[i]][0], cities[route[i + 1]][0], null);
-        }
-        traces.push({
-          type: "scattermapbox",
-          lon: rx,
-          lat: ry,
-          mode: "lines",
-          line: { width: 4, color: "blue" },
-          name: "Shortest Route"
-        });
+      if(route.length>1){
+        let rx=[], ry=[];
+        for(let i=0;i<route.length-1;i++){ rx.push(cities[route[i]][1],cities[route[i+1]][1],null); ry.push(cities[route[i]][0],cities[route[i+1]][0],null);}
+        traces.push({ type:"scattermapbox", lon:rx, lat:ry, mode:"lines", line:{width:4,color:"blue"}, name:"Shortest Route" });
       }
-
-      Plotly.newPlot("map", traces, {
-        mapbox: {
-          style: "open-street-map",
-          center: { lat: -6.9, lon: 107.5 },
-          zoom: 8.2
-        },
-        margin: { t: 0, b: 0, l: 0, r: 0 },
-        showlegend: false
-      });
+      Plotly.newPlot("map", traces, { mapbox:{ style:"open-street-map", center:{lat:-6.9, lon:107.5}, zoom:8.2 }, margin:{t:0,b:0,l:0,r:0}, showlegend:false });
     }
 
-    // Show route button handler
-    function calculateRoute() {
-      let start = startSelect.value,
-        end = endSelect.value;
+    function calculateRoute(){
+      let start=startSelect.value, end=endSelect.value;
+      const lang = localStorage.getItem("siteLanguage")||"en";
 
-      if (start === end) {
-        document.getElementById("info").innerHTML =
-          "⚠️ Select two different cities!";
+      if(start===end){
+        document.getElementById("info").innerHTML = translations[lang].info_same;
         drawMap();
         return;
       }
 
-      let result = dijkstra(graph, start, end);
-
-      if (result.distance === Infinity) {
-        document.getElementById(
-          "info"
-        ).innerHTML = `❌ No route from ${start} to ${end}.`;
+      let result = dijkstra(graph,start,end);
+      if(result.distance===Infinity){
+        document.getElementById("info").innerHTML = translations[lang].info_no_route.replace("{start}",start).replace("{end}",end);
         drawMap();
       } else {
-        document.getElementById(
-          "info"
-        ).innerHTML = `🚗 Shortest route from <b>${start}</b> to <b>${end}</b>:<br><b>${result.path.join(
-          " ➜ "
-        )}</b><br>Total distance: <b>${result.distance} km</b>`;
+        document.getElementById("info").innerHTML = translations[lang].info_route.replace("{start}",start).replace("{end}",end).replace("{path}",result.path.join(" ➜ ")).replace("{distance}",result.distance);
         drawMap(result.path);
       }
     }
