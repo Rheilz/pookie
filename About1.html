@@ -30,6 +30,21 @@
         }
     </style>
 </head>
+<script>
+function toggleLangMenu() {
+    const menu = document.getElementById("langMenu");
+    const arrow = document.getElementById("langArrow");
+
+    menu.classList.toggle("hidden");
+    arrow.classList.toggle("rotate-180");
+}
+
+function setLanguage(lang) {
+    alert("Language set to: " + lang);
+    document.getElementById("langMenu").classList.add("hidden");
+    document.getElementById("langArrow").classList.remove("rotate-180");
+}
+</script>
 
 <body>
 
@@ -48,14 +63,42 @@
 
 <!-- NAVBAR -->
 <nav class="bg-white shadow-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-start items-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+
+        <!-- Left Menu -->
         <div class="flex space-x-6 text-gray-700 font-medium">
-            <a href="About1.html" class="hover:text-green-600 transition duration-150" data-translate="nav_profile">Profile</a>
-            <a href="graph.html" class="hover:text-green-600 transition duration-150" data-translate="nav_graph">Graph</a>
-            <a href="kon.html" class="hover:text-green-600 transition duration-150" data-translate="nav_map">Connection Map</a>
+            <a href="About1.html" class="hover:text-green-600 transition duration-150">Profile</a>
+            <a href="graph.html" class="hover:text-green-600 transition duration-150">Graph</a>
+            <a href="kon.html" class="hover:text-green-600 transition duration-150">Connection Map</a>
         </div>
+
+        <!-- Language Dropdown -->
+        <div class="relative select-none">
+            <button onclick="toggleLangMenu()" 
+                    class="flex items-center space-x-1 text-gray-800 font-semibold text-sm hover:text-green-600 transition">
+                <span>Language</span>
+                <span id="langArrow" class="transition transform">&#9662;</span>
+            </button>
+
+            <div id="langMenu" 
+                 class="hidden absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md py-2 z-50">
+
+                <button onclick="setLanguage('ENG')" 
+                        class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100 text-sm">
+                    English (ENG)
+                </button>
+
+                <button onclick="setLanguage('ID')" 
+                        class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100 text-sm">
+                    Indonesian (ID)
+                </button>
+
+            </div>
+        </div>
+
     </div>
 </nav>
+
 
 <!-- TITLE -->
 <div class="mt-20 text-center">
@@ -176,3 +219,4 @@ document.getElementById("languageSelect").addEventListener("change", function ()
 
 </body>
 </html>
+
